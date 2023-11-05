@@ -2,17 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Task : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int targetCount;
+    public bool isPlayerControllable;
+    public bool isPoinntNClick;
+    public bool isClicker;
+    public bool active = true;
+    public GameObject cam;
+    public GameObject player;
+    public List<GameObject> targets = new List<GameObject>();
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (active)
+        {
+            if (isPlayerControllable) 
+            {
+
+            }
+            else if (isPoinntNClick)
+            {
+
+            }
+            else if (isClicker)
+            {
+
+            }
+        }
     }
 }
