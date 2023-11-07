@@ -1,26 +1,67 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public Task targetTask;
-    // Start is called before the first frame update
+    public bool canMove;
+    public bool dragging;
+    public Collider2D collider;
+    public Task task;
     void Start()
     {
+        
+        collider = GetComponent<Collider2D>();
+        canMove = false;
+        dragging = false;
 
     }
-
+    // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (task.isCompleated)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            if (hit && hit.transform.gameObject == this.gameObject)
+            Destroy(gameObject);
+        }
+        if (task.currentMiniGame == Task.MiniGameType.DragAndDrop)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if (Input.GetMouseButtonDown(0))
             {
-                targetTask.targetCount--;
-                Destroy(gameObject);
+                if (collider == Physics2D.OverlapPoint(mousePos))
+                {
+                    canMove = true;
+                }
+                else
+                {
+                    canMove = false;
+                }
+                if (canMove)
+                {
+                    dragging = true;
+                }
+
+
+            }
+            if (dragging)
+            {
+                this.transform.position = mousePos;
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                canMove = false;
+                dragging = false;
+            }
+        }
+        else if (task.currentMiniGame == Task.MiniGameType.ClickAll)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (collider == Physics2D.OverlapPoint(mousePos))
+                {
+                    task.targetCount--;
+                    Destroy(this.gameObject);
+                }
             }
         }
     }
